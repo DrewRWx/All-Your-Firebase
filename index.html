@@ -8,43 +8,36 @@
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
   </head>
   <body>
+    <title>dClicker</title>
     <div id="boxDiv"></div>
 
     <script>
+      var boxNum = -1;      
+
+      var queueRef = new Firebase('https://cs290b.firebaseio.com/queue');
       mycallback = function(){
-        queue.push({box: boxNum, mark: $(this).val()});
+        queueRef.push({box: boxNum, mark: $(this).val()});
       };
 
-      var boxNum = -1;
+      var usersRef = new Firebase('https://cs290b.firebaseio.com/users');
 
-      var queue = new Firebase('https://cs290b.firebaseio.com/queue');
-
-      var myDataRef = new Firebase('https://cs290b.firebaseio.com/users');
-
-      var chatRef = new Firebase('https://cs290b.firebaseio.com');
-      var auth = new FirebaseSimpleLogin(chatRef, function(error, user) {
+      var auth = new FirebaseSimpleLogin(usersRef, function(error, user) {
         if (error) {
           // an error occurred while attempting login
-          // console.log('error');
           console.log(error);
         } else if (user) {
           // user authenticated with Firebase
           console.log('User ID: ' + user.id + ', Provider: ' + user.provider);
 
-          myDataRef.transaction(function(users) {
-            // console.log('outer');
-
+          usersRef.transaction(function(users) {
             if (users != null) {
-              // console.log('not null');
-
-              var test = users;
-              for (var j = 0; j < 9; j++) {
-                if (test[j] == 0) {
-                  // console.log(user.id);
-                  test[j] = user.id;
-                  boxNum = j;
-                  myDataRef.child(j).onDisconnect().set(0);
-                  return test;
+              var c_users = users;
+              for (var i = 0; i < 9; i++) {
+                if (c_users[i] == 0) {
+                  c_users[i] = user.id;
+                  boxNum = i;
+                  usersRef.child(i).onDisconnect().set(0);
+                  return c_users;
                 };
               };
               return;
@@ -54,21 +47,17 @@
           }, function(err, committed, snapshot) {
             if (committed && !err) {
               // Joined room successfully.
-              console.log('Joined!');
 
               var html = '<p>' + (boxNum+1) + '</p>'
 
-              html += '<form action=""><input class="someclass" type="radio" name="marker" value="c">clear<br><input class="someclass" type="radio" name="marker" value="x">X<br><input class="someclass" type="radio" name="marker" value="o">O</form>';
+              html += '<form action=""><input class="clicker" type="radio" name="marker" value="c">clear<br><input class="clicker" type="radio" name="marker" value="x">X<br><input class="clicker" type="radio" name="marker" value="o">O</form>';
 
               var div = document.getElementById('boxDiv');
               div.innerHTML = html;
 
-              // var form = document.getElementById('boxDiv').children[1].click(mycallback);
-
-              $('.someclass').click(mycallback);
+              $('.clicker').click(mycallback);
             } else {
               // Could not join room because it was full.
-              console.log('Full');
 
               var html = '<p>Refresh to try for a square.</p>'
 
@@ -76,8 +65,6 @@
               div.innerHTML = html;
             }
           });
-
-              // myDataRef.child(user.id).set({'id': 7});
         } else {
           console.log('other');
           // user is logged out
@@ -86,9 +73,6 @@
 
 
       auth.login('anonymous');
-
-      // var form = document.getElementById('boxDiv').children[1];
-      // console.log(form);
     </script>
   </body>
 </html>

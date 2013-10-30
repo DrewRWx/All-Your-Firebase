@@ -8,50 +8,26 @@
     <script src='./functions.js'></script>
   </head>
   <body>
-    <title>cs290b.drew.waran.is</title>
+    <title>Naughts and Crosses</title>
 
-    <div id="tableDiv"></div>
+    <p>Please visit: <b>cs290b.drew.waran.is</b></p>
+    <div id="boardDiv"></div>
 
     <script>
       var board = new Array(9);
-      var users = new Array();
 
       for (var i = 0; i < board.length; i++){
         board[i] = '<font color="C0C0C0">' + (i+1) + '</font>';
       }
 
-      var usersRef = new Firebase('https://cs290b.firebaseio.com/users');
-      var myDataRef = new Firebase('https://cs290b.firebaseio.com/queue');
+      var queueRef = new Firebase('https://cs290b.firebaseio.com/queue');
 
-      // usersRef.on('child_added', function(snapshot) {
-      //   users = snapshot.val();
-      //   // console.log(users);
-      // });
-
-      // usersRef.on('child_changed', function(snapshot) {
-      //   users = snapshot.val();
-
-      //   drawTable(board);
-      //   // console.log(users);
-      // });
-
-      // usersRef.on('value', function(snapshot) {
-      //     users = snapshot.val();
-      //     // console.log(users);
-      // });
-
-      myDataRef.on('child_added', function(snapshot) {
-        
-        // usersRef.on('child_changed', function(snapshot) {
-        //   users = snapshot.val();
-        //   // console.log(users);
-        // });
-
+      queueRef.on('child_added', function(snapshot) {
         var message = snapshot.val();
         var mark = message.mark
 
         if (mark == 'c') {
-        mark = '<font color="C0C0C0">' + (message.box+1) + '</font>';
+          mark = '<font color="C0C0C0">' + (message.box+1) + '</font>';
         };
 
         board[message.box] = mark;

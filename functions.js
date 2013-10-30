@@ -1,6 +1,6 @@
 // determine if X or O.
 function determineWinners(iboard) {
-  var mark = 'c';
+  var mark = '';
   var winners = {};
 
   if ((board[0] === board[1]) && (board[1] === board[2])){
@@ -110,56 +110,6 @@ function drawTable(itable) {
   }
   table += '</table>'
 
-  var div = document.getElementById('tableDiv');
+  var div = document.getElementById('boardDiv');
   div.innerHTML = table;
 }
-
-
-
-  // if ((board[0] === board[1]) && (board[1] === board[2])){
-  //   winners[1] = 1;
-  //   winners[2] = 1;
-  //   winners[3] = 1;
-  // }
-
-  // if ((board[3] === board[4]) && (board[4] === board[5])){
-  //   winners[4] = 1;
-  //   winners[5] = 1;
-  //   winners[6] = 1;
-  // }
-
-  // if ((board[6] === board[7]) && (board[7] === board[8])) {
-  //   winners[7] = 1;
-  //   winners[8] = 1;
-  //   winners[9] = 1;
-  // }
-
-  // if ((board[0] === board[3]) && (board[3] === board[6])) {
-  //   winners[1] = 1;
-  //   winners[4] = 1;
-  //   winners[7] = 1;
-  // }
-
-  // if ((board[1] === board[4]) && (board[4] === board[7])){
-  //   winners[2] = 1;
-  //   winners[5] = 1;
-  //   winners[8] = 1;
-  // }
-
-  // if ((board[2] === board[5]) && (board[5] === board[8])){
-  //   winners[3] = 1;
-  //   winners[6] = 1;
-  //   winners[9] = 1;
-  // }
-
-  // if ((board[0] === board[4]) && (board[4] === board[8])) {
-  //   winners[1] = 1;
-  //   winners[5] = 1;
-  //   winners[9] = 1;
-  // }
-
-  // if ((board[2] === board[4]) && (board[4] === board[6])) {
-  //   winners[3] = 1;
-  //   winners[5] = 1;
-  //   winners[7] = 1;
-  // }
